@@ -71,9 +71,10 @@
               <p>{{ comment.content }}</p>
             </div>
           {% endfor %}
-          {% if paginate.pages > 1 %}
-            {{ paginate | default_pagination }}
-          {% endif %}
+          <div>
+            {% comment %} passing the paginate to pagination snippet {% endcomment %}
+            {% render 'pagination', pagination: paginate %}
+          </div>
         {% endpaginate %}
       </div>
     {% else %}
@@ -133,7 +134,6 @@
     {% endform %}
   </div>
 {% endif %}
-
 
 {% comment %} SEO JSON Structured Schema {% endcomment %}
 <script type="application/ld+json">

@@ -1,6 +1,4 @@
-<div>
-
-</div>
+<div></div>
 
 {% paginate blog.articles by section.settings.number_of_blog_post %}
   <h1>{{ blog.title }}</h1>
@@ -17,23 +15,29 @@
       {{ article.author }} @ {{ article.created_at }}
       <div>
         {% if article.excerpt.size > 0 %}
-          {{ article.excerpt |  strip_html |  truncatewords: 15 }}
+          {{ article.excerpt | strip_html | truncatewords: 15 }}
         {% else %}
           <p>{{ article.content | strip_html | truncatewords: 15 }}</p>
         {% endif %}
+        <a href="{{ article.url }}">{{ section.settings.blog_read_more }}</a>
       </div>
     </div>
   {% endfor %}
 
-  {% if paginate.pages > 1 %}
-    {{ paginate | default_pagination }}
-  {% endif %}
+  {% comment %} passing the paginate to pagination snippet {% endcomment %}
+  {% render 'pagination', pagination: paginate %}
 {% endpaginate %}
 
 {% schema %}
 {
   "name": "blog",
   "settings": [
+    {
+      "type": "text",
+      "id": "blog_read_more",
+      "label": "Read more label",
+      "default": "Read more"
+    },
     {
       "type": "range",
       "id": "number_of_blog_post",
