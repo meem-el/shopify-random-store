@@ -1,0 +1,15 @@
+{
+    "name": "Template 404",
+    // That is created in layout/custom_theme.liquid
+    // "layout": "custom_theme",
+    // "wrapper": "div#404_template.custom-class[custom-attribute='hello']",
+    "sections": {
+        "template": {
+            // created in sections/template-404.liquid, type is the file name
+            "type": "template-404"
+        }
+    },
+    "order": [
+        "template"
+    ],
+}

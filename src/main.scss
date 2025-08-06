@@ -1,0 +1,264 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+// variables
+$min-tab: 640px;
+$min-desktop: 1024px;
+
+html {
+    // 1rem = 10px
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+    font-family: "Roboto", sans-serif;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.rs-main__container {
+    padding-inline: 16px;
+    max-width: 1200px;
+    margin-inline: auto;
+
+    @media (min-width: $min-tab) {
+        padding-inline: 24px;
+    }
+
+    @media (min-width: $min-desktop) {
+        padding-inline: 40px;
+    }
+}
+
+@mixin flex($align: center, $justify: center, $direction: row) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+.rs-flex__inline__center {
+    @include flex(center);
+}
+
+//  ✨✨ nav section started ✨✨
+
+.rs-navbar {
+    .nav {
+        &__menu__btn {
+            align-content: end;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            outline: none;
+            height: 20px;
+            width: 20px;
+        }
+    }
+    &__container {
+        padding-block: 20px;
+        @include flex(center, space-between);
+
+        .nav {
+            &__logo {
+                text-decoration: none;
+                font-size: 2.2rem;
+                font-weight: 600;
+                color: black;
+            }
+
+            &__menu__btn__container {
+                @media (min-width: $min-desktop) {
+                    display: none;
+                }
+            }
+
+            &__links {
+                font-size: 1.8rem;
+                text-decoration: none;
+                color: black;
+            }
+
+            &__actions,
+            &__links__container {
+                display: none;
+
+                @media (min-width: $min-desktop) {
+                    @include flex(center);
+                    gap: 16px;
+                }
+            }
+
+            &__cart__btn {
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                outline: none;
+            }
+
+            &__dropdown__link_btn {
+                font-size: 1.8rem;
+                cursor: pointer;
+                background: transparent;
+                border: none;
+                outline: none;
+                color: black;
+
+                .nav__down__arrow {
+                    margin-left: 4px;
+                }
+            }
+
+            &__parent__links {
+                position: relative;
+            }
+
+            &__dropdown__links {
+                position: absolute;
+                top: 40px;
+                background-color: rgb(211, 238, 238);
+                min-width: 200px;
+
+                .nav__down__arrow {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+
+    &__mobile-menu {
+        display: none;
+
+        @media (max-width: $min-desktop) {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            height: 100vh;
+            width: 226px;
+            background-color: #d3eeee;
+            z-index: 1000;
+            padding: 20px;
+
+            .nav {
+                &__mobile__links__container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    margin-top: 20px;
+                }
+
+                &__links {
+                    color: black;
+                    font-size: 1.8rem;
+                    text-decoration: none;
+                    display: block;
+                    padding: 8px;
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+                }
+
+                &__dropdown__link_btn {
+                    padding: 8px;
+                    width: 100%;
+                    @include flex(center, space-between);
+
+                    &:hover {
+                        background-color: #f0f0f0;
+                    }
+                }
+
+                &__dropdown__links {
+                    margin-left: 24px;
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
+
+// Global nav elements not tied to container
+.nav {
+    &__dropdown__link_btn {
+        font-size: 1.8rem;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: black;
+    }
+
+    &__actions__btn {
+        font-size: 1.8rem;
+        text-decoration: none;
+        color: black;
+    }
+
+    &__dropdown__link__item {
+        padding: 10px 16px;
+        cursor: pointer;
+        display: block;
+
+        &:hover {
+            background-color: #f9f9f9;
+        }
+
+        @media (min-width: $min-desktop) {
+            margin: 10px 4px;
+        }
+    }
+}
+
+// ✨✨ nav section ended ✨✨
+
+// 404 page
+.template-404 {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 68px);
+        text-align: center;
+        padding: 2rem;
+        background-color: #f9f9f9;
+    }
+
+    &__title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #222;
+    }
+
+    &__subtitle {
+        font-size: 1.6rem;
+        color: #666;
+        max-width: 500px;
+    }
+    &__cta {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.6rem;
+        color: #fff;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #0056b3;
+        }
+    }
+}
+
+.placeholder__image {
+    width: 500px;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "meems-random-store",
+  "version": "1.0.0",
+  "description": "[![Generic badge](https://img.shields.io/badge/course%20available%3F-yes-green.svg)](https://shields.io/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"sass --watch src/main.scss:assets/main.css --no-source-map --style=compressed\" \"shopify theme dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polidario/Elizabeth_Clean.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polidario/Elizabeth_Clean/issues"
+  },
+  "homepage": "https://github.com/polidario/Elizabeth_Clean#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.9",
+    "sass": "^1.89.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

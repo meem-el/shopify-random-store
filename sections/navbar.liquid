@@ -1,0 +1,69 @@
+<header x-data="{ navDrawerOpen: false }" class="rs-navbar">
+  <nav class="rs-navbar__container">
+    <div>
+      <a class="nav__logo" href="{{ shop.url }}">{{ shop.name }}</a>
+    </div>
+    {% comment %} menu button {% endcomment %}
+    <div class="nav__menu__btn__container">
+      <button @click="navDrawerOpen = ! navDrawerOpen" class="nav__menu__btn">
+        {% render 'icon-menu' %}
+      </button>
+    </div>
+
+    <div class="nav__links__container">
+      {% for link in linklists['main-menu'].links %}
+        {% if link.links != blank %}
+          <div x-data="{ openDDLink: false }" class="nav__parent__links">
+            <button x-on:click="openDDLink = !openDDLink" class="nav__dropdown__link_btn">
+              {{ link.title }}
+              <span class="nav__down__arrow">{% render 'icons-arrow-down' %}</span>
+            </button>
+            <div x-show="openDDLink" @click.away="openDDLink = false" class="nav__dropdown__links">
+              {% for childlink in link.links %}
+                <a class="nav__actions__btn nav__dropdown__link__item" href="{{ childlink.url }}">
+                  {{- childlink.title -}}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <a class="nav__links" href="{{ link.url }}">{{ link.title }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="nav__actions">
+      <button class="nav__cart__btn">{% render 'icon-shopping-bag' %}</button>
+      <a class="nav__actions__btn" href="{{ routes.account_login_url }}">Login</a>
+      <a class="nav__actions__btn" href="{{ routes.account_register_url }}">Register</a>
+    </div>
+  </nav>
+  {% comment %} ✨ Mobile Menu ✨ {% endcomment %}
+  <div x-show="navDrawerOpen" @click.away="navDrawerOpen = false" class="rs-navbar__mobile-menu">
+    <button  @click="navDrawerOpen = false" class="nav__menu__btn">
+      {% render 'icon-close' %}
+    </button>
+    <div class="nav__mobile__links__container">
+      {% for link in linklists['main-menu'].links %}
+        {% if link.links != blank %}
+          <div x-data="{ openDDLink: false }" class="nav__parent__links">
+            <button x-on:click="openDDLink = !openDDLink" class="nav__dropdown__link_btn">
+              {{ link.title }}
+              <span class="nav__down__arrow">{% render 'icons-arrow-down' %}</span>
+            </button>
+            <div x-show="openDDLink" @click.away="openDDLink = false" class="nav__dropdown__links">
+              {% for childlink in link.links %}
+                <a class="nav__actions__btn nav__dropdown__link__item" href="{{ childlink.url }}">
+                  {{- childlink.title -}}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <div>
+            <a class="nav__links" href="{{ link.url }}">{{ link.title }}</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</header>
