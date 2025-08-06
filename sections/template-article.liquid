@@ -1,5 +1,5 @@
 <article
-  class="article__parent"
+  class="article"
   itemscope
   itemtype="https://schema.org/BlogPosting"
 >
@@ -7,34 +7,38 @@
     {% case block.type %}
       {% when 'article_title' %}
         <div class="article__title">
-          <a href="{{ blog.url }}">{{ blog.title }}</a>
-          <h1 itemprop="headline">{{ article.title }}</h1>
+          <a href="{{ blog.url }}" class="article__blog-link">{{ blog.title }}</a>
+          <h1 class="article__headline" itemprop="headline">{{ article.title }}</h1>
         </div>
+
       {% when 'article_author' %}
-        <div itemscope itemtype="https://schema.org/Person">
-          {% if section.settings.show_author %}
-            <div class="article__author">
-              <p>
-                By
-                <span itemprop="author">{{ article.author }}</span>
-              </p>
-            </div>
-          {% endif %}
-        </div>
+        {% if section.settings.show_author %}
+          <div class="article__author" itemscope itemtype="https://schema.org/Person">
+            <p>
+              By <span itemprop="author">{{ article.author }}</span>
+            </p>
+          </div>
+        {% endif %}
 
       {% when 'article_published_date' %}
         {% if section.settings.show_published_date %}
-          <p class="article__published__at">
+          <p class="article__published-at">
             Published on
-            <time itemprop="datePublished dateCreated" datetime="{{ article.published_at |  date: '%y-%m-%d' }}">
+            <time
+              class="article__date"
+              itemprop="datePublished dateCreated"
+              datetime="{{ article.published_at | date: '%y-%m-%d' }}"
+            >
               {{- article.published_at | date: '%y-%m-%d' -}}
             </time>
           </p>
         {% endif %}
+
       {% when 'featured_image' %}
-        <div itemprop="image" class="article__featured__image">
+        <div class="article__featured-image" itemprop="image">
           {% if article.image != blank %}
             <img
+              class="article__image"
               src="{{ article.image | image_url: width: article.image.width, height: article.image.height }}"
               alt="{{ article.image.alt | escape }}"
               loading="lazy"
@@ -43,92 +47,97 @@
             >
           {% else %}
             {% assign placeholder_image = 'lifestyle-2' %}
-            {{ placeholder_image | placeholder_svg_tag }}
+            {{ placeholder_image | placeholder_svg_tag: 'article__image article__image--placeholder' }}
           {% endif %}
         </div>
-      {% when 'article_content' %}
-        <div itemprop="articleBody" class="article__content">{{ article.content }}</div>
-      {% else %}
 
+      {% when 'article_content' %}
+        <div class="article__content" itemprop="articleBody">{{ article.content }}</div>
     {% endcase %}
   {% endfor %}
 </article>
 
 {% if blog.comments_enabled? %}
-  <div id="article__comments">
+  <div class="article__comments" id="article__comments">
     {% if article.comments_count > 0 %}
-      <div>
-        <h1>See what people are saying</h1>
+      <div class="article__comments-list">
+        <h1 class="article__comments-title">See what people are saying</h1>
 
         {% paginate article.comments by 5 %}
           {% for comment in article.comments %}
-            <div>
-              <span>{{ comment.author }}</span>
-              <p>
+            <div class="article__comment">
+              <span class="article__comment-author">{{ comment.author }}</span>
+              <p class="article__comment-meta">
                 Created at
-                <span>{{ comment.created_at | date: format: 'date' }}</span>
+                <span class="article__comment-date">
+                  {{ comment.created_at | date: format: 'date' }}
+                </span>
               </p>
-              <p>{{ comment.content }}</p>
+              <p class="article__comment-body">{{ comment.content }}</p>
             </div>
           {% endfor %}
-          <div>
-            {% comment %} passing the paginate to pagination snippet {% endcomment %}
+          <div class="article__pagination">
             {% render 'pagination', pagination: paginate %}
           </div>
         {% endpaginate %}
       </div>
     {% else %}
-      There are no comments yet.
+      <p class="article__no-comments">There are no comments yet.</p>
     {% endif %}
   </div>
 
-  <div class="article__comment__parent">
+  <div class="article__comment-form">
     {% form 'new_comment', article %}
-      <div>
+      <div class="article__comment-fields">
         {% if form.errors %}
-          Oh no! Your comment was not posted
-
-          <ul>
-            {% for error in form.errors %}
-              <li>
-                <span>{{ form.errors.messages[error] }}</span>
-              </li>
-            {% endfor %}
-          </ul>
+          <div class="article__comment-error">
+            <p>Oh no! Your comment was not posted</p>
+            <ul>
+              {% for error in form.errors %}
+                <li>
+                  <span>{{ form.errors.messages[error] }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
         {% elsif form.posted_successfully? %}
-          <p>Comment is posted successfully</p>
+          <p class="article__comment-success">Comment is posted successfully</p>
         {% endif %}
-        <div>
+
+        <div class="article__comment-field">
           <label for="comment_author">Name</label>
           <input
             type="text"
             name="comment[author]"
             id="comment_author"
-            class="article__comment__field"
+            class="article__input"
             required
           >
         </div>
-        <div>
+
+        <div class="article__comment-field">
           <label for="comment_email">Email</label>
           <input
             type="email"
             name="comment[email]"
             id="comment_email"
-            class="article__comment__field"
+            class="article__input"
             required
           >
         </div>
-        <div>
+
+        <div class="article__comment-field">
           <label for="comment_content">Description</label>
           <textarea
             name="comment[body]"
             id="comment_content"
-            class="article__comment__field"
+            class="article__textarea"
             required
           ></textarea>
         </div>
-        <div>
-          <input type="submit" value="Post Comment">
+
+        <div class="article__comment-submit">
+          <input type="submit" value="Post Comment" class="article__submit-btn">
         </div>
       </div>
     {% endform %}
