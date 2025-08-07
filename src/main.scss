@@ -548,3 +548,69 @@ html {
 }
 
 // single article page ended ✨✨
+
+// cart page started ✨✨
+.rs-cart {
+    &__empty {
+        &__container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+        &__title {
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+    }
+    &__container {
+        &__product__image {
+            height: 80px;
+            width: 80px;
+            object-fit: cover;
+        }
+    }
+    &__head{
+        display: flex;
+        justify-content: space-between;
+        margin-block: 20px;
+
+        &__title{
+            font-size: 2.8rem;
+        }
+    }
+    &__product__table{
+        width: 100%;
+        table-layout: fixed;
+
+        &-head{
+            font-size: 1.8rem;
+            padding-block: 8px;
+        }
+
+        &-body{
+            td{
+                padding-right: 12px;
+            }
+        }
+        &-product{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &-title{
+                color: #222;
+                text-decoration: none;
+                font-size: 1.6rem ;
+            }
+        }
+    }
+    &__continue__shopping__action {
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        background-color: #3c8de4;
+        padding: 12px 16px;
+        border-radius: 8px;
+    }
+}
+// cart page ended ✨✨

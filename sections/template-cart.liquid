@@ -1,4 +1,117 @@
- {% if cart.item_count > 0 %}
-    {% else %}
-        <div class=""></div>
- {% endif %}
+<div class="rs-cart">
+  {% if cart.item_count > 0 %}
+    <div class="rs-cart__container">
+      <div class="rs-cart__head">
+        <p class="rs-cart__head__title">Your cart</p>
+        <div>
+          <a class="rs-cart__continue__shopping__action" href="{{ routes.collections_url }}">Continue Shopping</a>
+        </div>
+      </div>
+      <div>
+        <form action="{{routes.cart_url}}" method="POST">
+          <table class="rs-cart__product__table">
+            <thead class="rs-cart__product__table-head">
+              <th align="left">Product</th>
+              <th align="left">Quantity</th>
+              <th align="left">Total Price</th>
+            </thead>
+            <tbody class="rs-cart__product__table-body">
+              {% for item in cart.items %}
+                <tr>
+                  <td class="rs-cart__product__table-product">
+                    <div>
+                      <a href="{{ item.url }}">
+                        {% if item.image %}
+                          <img
+                            class="rs-cart__container__product__image"
+                            src="{{ item.image |  img_url: 'small' }}"
+                            alt="{{ item.title |  escape }}"
+                          >
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: 'rs-cart__container__product__image' }}
+                        {% endif %}
+                      </a>
+                    </div>
+                    <div>
+                      <a class="rs-cart__product__table-product-title" href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
+                      <span>{{ item.variant.title }}</span>
+                      {% comment %} <a href="{{ item.url_to_remove }}">Remove</a> {% endcomment %}
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+                    </div>
+                  </td>
+
+                  <td>
+                    <input
+                      type="number"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                      min="1"
+                      id="updates_{{ forloop.index }}"
+                    >
+                  </td>
+                  <td>
+                    {{ item.line_price | money }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div>
+            <div>
+              <label for="cart_notes">Cart Notes</label>
+              <textarea name="note" id="cart_notes"></textarea>
+            </div>
+            <div>
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'subtotal' %}
+                    <p>Subtotal: {{ cart.total_price | money }}</p>
+                  {% when 'update_button' %}
+                    <div>
+                      <button name="update" type="submit">Update</button>
+                    </div>
+                  {% when 'checkout_button' %}
+                    <div>
+                      <button name="checkout" type="submit">Checkout</button>
+                    </div>
+                  {% else %}
+
+                {% endcase %}
+              {% endfor %}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <div class="rs-cart__empty__container">
+      <div>
+        <p class="rs-cart__empty__title">Your cart is empty</p>
+        <a class="rs-cart__continue__shopping__action" href="{{ routes.collections_url }}">Continue Shopping</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Template Cart",
+  "blocks": [
+    {
+      "type": "subtotal",
+      "name": "Subtotal",
+      "limit": 1
+    },
+    {
+      "type": "update_button",
+      "name": "Update Button",
+      "limit": 1
+    },
+    {
+      "type": "checkout_button",
+      "name": "Checkout Button",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

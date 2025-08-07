@@ -32,14 +32,21 @@
       {% endfor %}
     </div>
     <div class="nav__actions">
-      <button class="nav__cart__btn">{% render 'icon-shopping-bag' %}</button>
-      <a class="nav__actions__btn" href="{{ routes.account_login_url }}">Login</a>
-      <a class="nav__actions__btn" href="{{ routes.account_register_url }}">Register</a>
+      <a href="{{ routes.cart_url }}" class="nav__actions__btn">{% render 'icon-shopping-bag' %}</a>
+      {% if shop.customer_accounts_enabled %}
+        {% if customer %}
+          <a href="{{ routes.account_url }}" class="nav__actions__btn">Account</a>
+          {{ 'Log out' | customer_logout_link | replace: '<a', '<a class="nav__actions__btn"' }}
+        {% else %}
+          {{ 'Log in' | customer_login_link | replace: '<a', '<a class="nav__actions__btn"' }}
+          {{ 'Register' | customer_register_link | replace: '<a', '<a class="nav__actions__btn"' }}
+        {% endif %}
+      {% endif %}
     </div>
   </nav>
   {% comment %} ✨ Mobile Menu ✨ {% endcomment %}
   <div x-show="navDrawerOpen" @click.away="navDrawerOpen = false" class="rs-navbar__mobile-menu">
-    <button  @click="navDrawerOpen = false" class="nav__menu__btn">
+    <button @click="navDrawerOpen = false" class="nav__menu__btn">
       {% render 'icon-close' %}
     </button>
     <div class="nav__mobile__links__container">
