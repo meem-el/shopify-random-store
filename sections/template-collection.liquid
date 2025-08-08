@@ -1,19 +1,33 @@
-{% paginate collection.products by 2 %}
-  <h1>{{ collection.title }}</h1>
-  {% for product in collection.products %}
-    <div>
-      <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-      {{ product.price | money }}
-      {% unless product.available -%}
-        <br>
-        <strong>sold out</strong>
-      {%- endunless %}
-      <a href="{{ product.url | within: collection }}">
-        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-      </a>
-    </div>
-  {% else %}
-    <p>There are no products</p>
-  {% endfor %}
-  {% render 'pagination', pagination: paginate %}
-{% endpaginate %}
+<div class="rs__plp">
+  <h1 class="rs__plp__title">{{ collection.title }}</h1>
+  <div>
+    {% if collection.products_count == 0 %}
+      <div>
+        <p>There are no products</p>
+      </div>
+    {% else %}
+      {% paginate collection.products by section.settings.number_of_product_per_page %}
+        <div class="rs__plp__product__list">
+          {% for product in collection.products %}
+            {% render 'product-card', product_product: product %}
+          {% endfor %}
+        </div>
+        {% render 'pagination', pagination: paginate %}
+      {% endpaginate %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Template Collection",
+  "settings": [
+    {
+      "type": "number",
+      "id": "number_of_product_per_page",
+      "default": 3,
+      "label": "Number of product per page"
+    }
+  ]
+}
+{% endschema %}

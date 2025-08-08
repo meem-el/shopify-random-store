@@ -1,0 +1,37 @@
+<div class="rs__plp__product__list-product">
+  <div>
+    <a href="{{ product_product.url | within: collection }}">
+      {% if product_product.featured_image %}
+        <div class="rs__plp__product__list__main__media__container">
+          <img
+            class="rs__plp__product__list__main__media"
+            src="{{ product_product.featured_image.src | img_url: 'large' }}"
+            alt="{{ product_product.featured_image.alt | escape }}"
+          >
+        </div>
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'rs__plp__product__list__main__media' }}
+      {% endif %}
+    </a>
+  </div>
+  <div class="rs__plp__product__list__content">
+    <div>
+      <a
+        class="rs__decoration__none rs__plp__product__list-title"
+        href="{{ product_product.url | within: collection }}"
+      >
+        {{- product_product.title -}}
+      </a>
+    </div>
+    <div>
+      <p class="rs__plp__product__list__price">
+        {{ product_product.price | money }}
+      </p>
+    </div>
+
+    {% unless product_product.available -%}
+      <br>
+      <strong>sold out</strong>
+    {%- endunless %}
+  </div>
+</div>
