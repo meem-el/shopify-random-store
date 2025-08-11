@@ -1,0 +1,129 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<div class="rs-pdp">
+  <div class="rs-pdp__media">
+    <div class="rs-pdp__media__desktop">
+      <!-- Featured media -->
+      <div class="rs-pdp__media__desktop-featured">
+        {% assign featured_media = product.media.first %}
+        {% render 'product-media', media: featured_media %}
+      </div>
+
+      <!-- Thumbnails row -->
+      <div class="rs-pdp__media__desktop-thumbs">
+        {% for media in product.media offset: 1 limit: 3 %}
+          <div class="rs-pdp__media__desktop-thumb">
+            {% render 'product-media', media: media %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rs-pdp__media__mobile">
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for media in product.media %}
+            <div class="swiper-slide">
+              <div>
+                {% render 'product-media', media: media %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rs-pdp__product_info">
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <div>
+        <span>{{ product.vendor }}</span>
+      </div>
+      <div>
+        <h1>{{ product.title }}</h1>
+      </div>
+      <div>
+        {% assign product_price = product.selected_or_first_available_variant %}
+        <span class="rs__line__through">{{ product_price.compare_at_price | money }}</span>
+        <span>{{ product_price.price | money }}</span>
+
+        {% if product_price.price < product_price.compare_at_price %}
+          <span>Sale!</span>
+        {% endif %}
+      </div>
+
+      <div>
+        {% unless product.has_only_default_variant %}
+          <div data-url="{{ product.url }}" data-section="" {{ section.id }}>
+            {% for option in product.options_with_values %}
+              <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+
+              <div>
+                <select
+                  name="options[{{ option.name |  escape }}]"
+                  id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                >
+                  {% for value in option.values %}
+                    <option
+                      value="{{ value |  escape }}"
+                      {% if option.selected_value == value %}
+                        selected="selected"
+                      {% endif %}
+                    >
+                      {{ value }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+        {% endunless %}
+      </div>
+
+      <div>
+        <label for="Quantity-{{ section.id }}">Quantity</label>
+        <div>
+          <input type="number" name="quantity" id="Quantity-{{ section.id }}" value="1" min="1">
+        </div>
+      </div>
+      <div>
+        <p>{{ product.description }}</p>
+      </div>
+      <div>
+        <button
+          {% if product.selected_or_first_available_variant.available == false %}
+            disabled
+          {% endif %}
+        >
+          {% if product.selected_or_first_available_variant.available == false %}
+            Sold Out
+          {% else %}
+            Add to cart
+          {% endif %}
+        </button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+<script>
+  const swiper = new Swiper('.swiper', {
+    direction: 'horizontal',
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      prevEl: '.swiper-button-prev',
+      nextEl: '.swiper-button-next',
+    },
+  });
+</script>
