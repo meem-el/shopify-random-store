@@ -46,6 +46,7 @@ html {
 //  ✨✨ nav section started ✨✨
 
 .rs-navbar {
+    position: relative;
     .nav {
         &__menu__btn {
             align-content: end;
@@ -719,9 +720,11 @@ html {
 
 .rs-pdp {
     margin-block: 28px;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     @media (max-width: $min-desktop) {
+        display: flex;
         flex-direction: column;
     }
 
@@ -733,7 +736,7 @@ html {
         max-width: 600px;
         display: flex;
         flex-direction: column;
-        gap: .5rem;
+        gap: 0.5rem;
 
         &-featured {
             width: 100%;
@@ -875,7 +878,21 @@ html {
     }
 }
 
-
-.rs__line__through{
+.rs__line__through {
     text-decoration: line-through;
+}
+
+.rs__global__search {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    background-color: white;
+    border: 1px solid lightgrey;
+
+    &__content {
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
